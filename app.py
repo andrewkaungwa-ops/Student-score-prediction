@@ -2,21 +2,18 @@ import streamlit as st
 import pickle
 import numpy as np
 
-# Load the trained model
 model = pickle.load(open("student_score_model.pkl", "rb"))
+
+st.write("Model expects", model.n_features_in_, "features")
 
 st.title("🎓 Student Score Predictor")
 
-# Inputs
 study_hours = st.slider("Study Hours per Day", 0, 12, 4)
 attendance = st.slider("Attendance (%)", 0, 100, 75)
 previous_score = st.slider("Previous Score", 0, 100, 60)
-absences = st.slider("Number of Absences", 0, 30, 5)
 
 if st.button("Predict Score"):
-
-    input_data = np.array([[study_hours, attendance, previous_score, absences]])
-
+    input_data = np.array([[study_hours, attendance, previous_score]])
     predicted_score = model.predict(input_data)
     score = predicted_score[0]
 
