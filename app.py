@@ -5,13 +5,10 @@ import numpy as np
 model = pickle.load(open("student_score_model.pkl","rb"))
 
 st.title("🎓 Student Score Predictor")
-st.write("AI model to predict a student's exam score")
 
-st.sidebar.header("Student Information")
-
-study_hours = st.sidebar.slider("Study Hours per Day",0,12,4)
-attendance = st.sidebar.slider("Attendance (%)",0,100,75)
-previous_score = st.sidebar.slider("Previous Score",0,100,60)
+study_hours = st.slider("Study Hours per Day",0,12,4)
+attendance = st.slider("Attendance (%)",0,100,75)
+previous_score = st.slider("Previous Score",0,100,60)
 
 if st.button("Predict Score"):
 
@@ -20,12 +17,13 @@ if st.button("Predict Score"):
     score = predicted_score[0]
 
     st.subheader(f"Predicted Score: {score:.2f}")
-st.progress(int(score))
 
-if score < 60:
-    st.error("⚠️ Student may fail. Increase study time and attendance.")
-elif score < 80:
-    st.warning("📚 Student is doing okay but can improve with more study.")
-else:
-    st.success("🎉 Excellent performance predicted!")
-    st.balloons()
+    st.progress(int(score))
+
+    if score < 60:
+        st.error("⚠️ Student may fail. Increase study time and attendance.")
+    elif score < 80:
+        st.warning("📚 Student is doing okay but can improve with more study.")
+    else:
+        st.success("🎉 Excellent performance predicted!")
+        st.balloons()
