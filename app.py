@@ -2,24 +2,30 @@ import streamlit as st
 import pickle
 import numpy as np
 
-model = pickle.load(open("student_score_model.pkl", "rb"))
+model = pickle.load(open("student_score_model.pkl","rb"))
 
-st.title("Student Score Prediction System")
+st.title("🎓 Student Score Predictor")
+st.write("AI model to predict a student's exam score")
 
-study_hours = st.number_input("Weekly Self Study Hours")
-absence_days = st.number_input("Absence Days")
+st.sidebar.header("Student Information")
+
+study_hours = st.sidebar.slider("Study Hours per Day",0,12,4)
+attendance = st.sidebar.slider("Attendance (%)",0,100,75)
+previous_score = st.sidebar.slider("Previous Score",0,100,60)
 
 if st.button("Predict Score"):
 
-    prediction = model.predict([[study_hours, absence_days]])
-    score = prediction[0]
+    input_data = np.array([[study_hours,attendance,previous_score]])
+    predicted_score = model.predict(input_data)
+    score = predicted_score[0]
 
-    st.subheader("Predicted Final Score:")
-    st.write(round(score,2))
+    st.subheader(f"Predicted Score: {score:.2f}")
+st.progress(int(score))
 
-    if score < 60:
-        st.write("Recommendation: Increase study hours and reduce absences.")
-    elif score < 80:
-        st.write("Recommendation: Good performance but more study could improve scores.")
-    else:
-        st.write("Excellent performance. Keep it up!")
+if score < 60:
+    st.error("⚠️ Student may fail. Increase study time and attendance.")
+elif score < 80:
+    st.warning("📚 Student is doing okay but can improve with more study.")
+else:
+    st.success("🎉 Excellent performance predicted!")
+    st.balloons()
