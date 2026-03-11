@@ -12,7 +12,7 @@ attendance = st.slider("Attendance (%)", 0, 100, 75)
 if st.button("Predict Score"):
     input_data = np.array([[study_hours, attendance/100]])
     predicted_score = model.predict(input_data)
-    score = predicted_score[0]
+    score = max(0, min(100, predicted_score[0]))
 
     st.subheader(f"Predicted Score: {score:.2f}")
     st.progress(int(score))
