@@ -10,7 +10,7 @@ study_hours = st.slider("Study Hours per Day", 0, 12, 4)
 attendance = st.slider("Attendance (%)", 0, 100, 75)
 
 if st.button("Predict Score"):
-    input_data = np.array([[study_hours, attendance]])
+    input_data = np.array([[study_hours, attendance/100]])
     predicted_score = model.predict(input_data)
     score = predicted_score[0]
 
